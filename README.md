@@ -1,6 +1,6 @@
 # Central do Assinante Tubaron
 
-Sistema full stack para autoatendimento de clientes Tubaron, com dashboard do assinante, faturas, contratos, suporte premium para ONUs Huawei, assistente com Gemini e painel administrativo protegido.
+Sistema full stack para autoatendimento de clientes Tubaron, com central inteligente do assinante, triagem guiada, faturas, contratos, diagnostico de internet, assistente com Gemini e painel administrativo protegido.
 
 ## Stack
 
@@ -72,6 +72,7 @@ Todas as informacoes sensiveis ficam fora do codigo e devem ser configuradas por
 - `HUAWEI_BASE_URL`, `HUAWEI_TOKEN`, `HUAWEI_USE_MOCK`
 - `GEMINI_API_KEY`, `GEMINI_MODEL`, `GEMINI_USE_MOCK`
 - `FRONTEND_URL`: uma ou mais origens autorizadas no CORS, separadas por virgula
+- `VITE_WHATSAPP_NUMBER`: numero padrao para envio do resumo da triagem pelo WhatsApp
 
 Os mocks vem ativados no `.env.example` para apresentacao segura sem credenciais reais.
 
@@ -144,9 +145,10 @@ O schema tambem define checks de integridade e indices para logs, historico de I
 
 - Cliente entra com CPF, CNPJ ou login PPPoE validado via IXC.
 - Admin entra pelo modo administrativo do login e acessa o painel protegido.
-- Dashboard mostra status da conexao, plano, vencimento, contratos, faturas e avisos.
+- Central inicial mostra status da conexao, plano, vencimento, faturas e triagem guiada.
 - Faturas exibem PIX/codigo de barras quando retornados pelo IXC e permitem copiar o PIX.
-- Suporte Premium consulta ONU Huawei, exibe sinal/status, altera Wi-Fi e permite reinicio auditado.
+- Atendimento inteligente coleta sintomas, gera resumo com contexto da conta e abre WhatsApp.
+- Suporte tecnico consulta ONU Huawei, exibe sinal/status, altera Wi-Fi e permite reinicio auditado.
 - IA explica faturas, planos, Wi-Fi e testes basicos, orientando atendimento humano quando necessario.
 - Painel admin concentra integracoes, metricas, avisos, logs e permissoes.
 - Administradores podem publicar avisos para assinantes com auditoria.

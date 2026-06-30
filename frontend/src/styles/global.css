@@ -214,6 +214,7 @@ textarea:focus {
   border-radius: 8px;
   padding: 0 18px;
   font-weight: 800;
+  text-decoration: none;
   transition: transform 0.2s ease, background 0.2s ease;
 }
 
@@ -354,7 +355,7 @@ textarea:focus {
   align-items: stretch;
   border: 1px solid color-mix(in srgb, var(--primary) 24%, var(--line));
   border-radius: 8px;
-  padding: clamp(22px, 4vw, 38px);
+  padding: clamp(22px, 4vw, 34px);
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--primary) 10%, var(--panel)), var(--panel) 64%),
     var(--panel);
@@ -364,7 +365,7 @@ textarea:focus {
 .smart-hero h1 {
   max-width: 760px;
   margin: 8px 0 12px;
-  font-size: clamp(2rem, 5vw, 4.4rem);
+  font-size: clamp(2rem, 4vw, 3.8rem);
   line-height: 1;
 }
 
@@ -378,21 +379,34 @@ textarea:focus {
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
   margin-top: 22px;
 }
 
-.hero-actions span,
+.primary-action,
+.secondary-action,
 .intelligence-steps span {
   display: inline-flex;
   gap: 8px;
   align-items: center;
   border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 9px 12px;
+  border-radius: 8px;
+  min-height: 44px;
+  padding: 0 14px;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.primary-action {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+}
+
+.secondary-action,
+.intelligence-steps span {
   background: var(--panel-soft);
   color: var(--text);
-  font-weight: 800;
 }
 
 .account-pulse {
@@ -432,6 +446,10 @@ textarea:focus {
   gap: 16px;
 }
 
+.compact-metrics {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .card {
   padding: 20px;
 }
@@ -448,14 +466,14 @@ textarea:focus {
 
 .service-card {
   display: grid;
-  gap: 14px;
+  gap: 12px;
   align-content: start;
-  min-height: 190px;
+  min-height: 168px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 18px;
+  padding: 16px;
   background: var(--panel);
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 30px rgba(22, 35, 33, 0.06);
 }
 
 .service-card:hover {
@@ -472,7 +490,7 @@ textarea:focus {
 
 .service-card h2 {
   margin: 4px 0 8px;
-  font-size: 1.08rem;
+  font-size: 1rem;
 }
 
 .service-card p {
@@ -496,6 +514,10 @@ textarea:focus {
   align-items: center;
 }
 
+.clean-intelligence {
+  box-shadow: none;
+}
+
 .intelligence-card h2 {
   margin: 6px 0 8px;
 }
@@ -504,6 +526,156 @@ textarea:focus {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+}
+
+.smart-center {
+  display: grid;
+  gap: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 20px;
+  background: var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.smart-center-grid {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.flow-list {
+  display: grid;
+  gap: 8px;
+}
+
+.flow-list button {
+  display: flex;
+  gap: 11px;
+  align-items: center;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--panel-soft);
+  color: var(--text);
+  text-align: left;
+}
+
+.flow-list button.active {
+  border-color: color-mix(in srgb, var(--primary) 55%, var(--line));
+  background: color-mix(in srgb, var(--primary) 12%, var(--panel));
+  color: var(--primary);
+}
+
+.flow-list strong,
+.flow-list small {
+  display: block;
+}
+
+.flow-list small {
+  margin-top: 2px;
+}
+
+.flow-detail {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+
+.flow-header {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: var(--panel-soft);
+}
+
+.flow-header span {
+  color: var(--primary);
+  font-size: 0.78rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.flow-header h3 {
+  margin: 6px 0 8px;
+  font-size: 1.5rem;
+}
+
+.flow-header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.question-stack {
+  display: grid;
+  gap: 12px;
+}
+
+fieldset {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin: 0;
+  padding: 14px;
+}
+
+legend {
+  padding: 0 6px;
+  color: var(--text);
+  font-weight: 900;
+}
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.answer-grid label {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px;
+  background: var(--panel-soft);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.answer-grid label.checked {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 12%, var(--panel-soft));
+}
+
+.answer-grid input {
+  width: auto;
+  margin-top: 3px;
+}
+
+.central-recommendation {
+  border-left: 4px solid var(--primary);
+  border-radius: 8px;
+  padding: 13px 14px;
+  background: color-mix(in srgb, var(--primary) 10%, var(--panel-soft));
+}
+
+.central-recommendation strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.central-recommendation p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.summary-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
 .metric-card {
@@ -696,6 +868,10 @@ textarea:focus {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .compact-metrics {
+    grid-template-columns: 1fr;
+  }
+
   .smart-hero,
   .intelligence-card {
     grid-template-columns: 1fr;
@@ -703,6 +879,10 @@ textarea:focus {
 
   .service-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .smart-center-grid {
+    grid-template-columns: 1fr;
   }
 
   .form-grid,
@@ -721,6 +901,10 @@ textarea:focus {
   }
 
   .service-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .answer-grid {
     grid-template-columns: 1fr;
   }
 
