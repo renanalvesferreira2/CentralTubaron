@@ -11,7 +11,7 @@ const server = app.listen(env.port, () => {
 async function shutdown(signal) {
   console.log(`Received ${signal}. Closing server...`);
   server.close(async () => {
-    await pool.end();
+    await pool?.end();
     process.exit(0);
   });
 }

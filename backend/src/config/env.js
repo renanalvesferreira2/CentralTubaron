@@ -2,7 +2,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const required = ['JWT_SECRET', 'DATABASE_URL'];
+const demoMode = process.env.DEMO_MODE !== 'false';
+const required = demoMode ? ['JWT_SECRET'] : ['JWT_SECRET', 'DATABASE_URL'];
 
 for (const key of required) {
   if (!process.env[key]) {
@@ -12,6 +13,7 @@ for (const key of required) {
 
 export const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
+  demoMode,
   port: Number(process.env.PORT || 4000),
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
   databaseUrl: process.env.DATABASE_URL,
