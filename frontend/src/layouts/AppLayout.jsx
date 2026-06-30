@@ -1,12 +1,12 @@
-import { Bot, CreditCard, Headphones, LayoutDashboard, LogOut, Moon, Settings, Sun } from 'lucide-react';
+import { Bot, CreditCard, Headphones, Home, LogOut, Moon, Settings, Sun } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { useTheme } from '../contexts/ThemeContext.jsx';
 
 const nav = [
-  { id: 'dashboard', label: 'Inicio', icon: LayoutDashboard },
+  { id: 'dashboard', label: 'Central', icon: Home },
   { id: 'billing', label: 'Faturas', icon: CreditCard },
-  { id: 'support', label: 'Suporte', icon: Headphones },
-  { id: 'ai', label: 'IA', icon: Bot },
+  { id: 'support', label: 'Atendimento', icon: Headphones },
+  { id: 'ai', label: 'Assistente', icon: Bot },
   { id: 'admin', label: 'Admin', icon: Settings, adminOnly: true }
 ];
 
@@ -42,7 +42,7 @@ export function AppLayout({ page, setPage, children }) {
         <header className="topbar">
           <div>
             <span>Ola, {customer?.name?.split(' ')[0] || 'cliente'}</span>
-            <strong>Como podemos simplificar seu dia?</strong>
+            <strong>Sua central inteligente esta pronta.</strong>
           </div>
           <div className="top-actions">
             <button aria-label="Alternar tema" onClick={toggleTheme}>

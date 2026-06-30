@@ -1,4 +1,4 @@
-import { Power, Router, Save, Signal, Wifi } from 'lucide-react';
+import { Banknote, MessageCircle, Power, Router, Save, Signal, Tv, UserRound, Wifi } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../components/Button.jsx';
 import { Card } from '../components/Card.jsx';
@@ -6,6 +6,13 @@ import { Skeleton } from '../components/Skeleton.jsx';
 import { StatusBadge } from '../components/StatusBadge.jsx';
 import { useAsync } from '../hooks/useAsync.js';
 import { getPremiumSupport, rebootOnu, updateWifi } from '../services/supportService.js';
+
+const serviceFlows = [
+  { icon: Wifi, title: 'Internet e Wi-Fi', text: 'Lentidao, quedas, senha, alcance e equipamentos.' },
+  { icon: Banknote, title: 'Financeiro', text: 'Fatura, PIX, comprovante, desbloqueio e negociacao.' },
+  { icon: Tv, title: 'TV e aplicativos', text: 'Login, travamentos, canal sem imagem e aplicativo.' },
+  { icon: UserRound, title: 'Cadastro e contrato', text: 'Dados cadastrais, mudanca de endereco e titularidade.' }
+];
 
 export function SupportPage() {
   const { data, loading, error, reload } = useAsync(getPremiumSupport, []);
@@ -53,9 +60,37 @@ export function SupportPage() {
   return (
     <div className="stack">
       <div className="page-heading">
-        <h1>Suporte Premium</h1>
-        <p>Controles sensiveis passam exclusivamente pelo backend, com auditoria e permissoes.</p>
+        <h1>Atendimento inteligente</h1>
+        <p>Escolha uma necessidade. A central organiza perguntas, dados da conta e diagnostico antes de enviar ao setor certo.</p>
       </div>
+
+      <section className="service-grid">
+        {serviceFlows.map((item) => {
+          const Icon = item.icon;
+          return (
+            <article className="service-card" key={item.title}>
+              <div className="service-icon"><Icon size={21} /></div>
+              <div>
+                <h2>{item.title}</h2>
+                <p>{item.text}</p>
+              </div>
+            </article>
+          );
+        })}
+      </section>
+
+      <Card className="intelligence-card">
+        <div>
+          <span className="eyebrow">Diagnostico automatico</span>
+          <h2>Sua conexao esta sendo analisada antes do chamado.</h2>
+          <p>Quando o atendimento humano for necessario, a equipe recebe sinal, status da ONU e resumo do problema.</p>
+        </div>
+        <div className="intelligence-steps">
+          <span><MessageCircle size={16} /> Perguntas guiadas</span>
+          <span><Signal size={16} /> Sinal da ONU</span>
+          <span><Router size={16} /> Equipamento</span>
+        </div>
+      </Card>
 
       <div className="metrics">
         <Card className="metric-card"><Router /> <div><span>ONU</span><strong>{onu.serial}</strong><small>{onu.uptime}</small></div></Card>
@@ -66,7 +101,7 @@ export function SupportPage() {
 
       <Card>
         <div className="section-title">
-          <h2>Diagnostico rapido</h2>
+          <h2>Checklist da central</h2>
           <StatusBadge>{onu.status}</StatusBadge>
         </div>
         <div className="compact-list">
@@ -80,7 +115,7 @@ export function SupportPage() {
       </Card>
 
       <Card>
-        <div className="section-title"><h2>Alterar Wi-Fi</h2></div>
+        <div className="section-title"><h2>Acoes seguras no equipamento</h2></div>
         <form className="form-grid" onSubmit={saveWifi}>
           <label>Nome da rede<input value={ssid} onChange={(event) => setSsid(event.target.value)} placeholder={onu.wifi.ssid} required /></label>
           <label>Nova senha<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Minimo 8 caracteres" minLength={8} required /></label>
