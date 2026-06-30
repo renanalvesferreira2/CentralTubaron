@@ -12,6 +12,8 @@ Sistema full stack para autoatendimento de clientes Tubaron, com dashboard do as
 
 ## Como executar com Docker
 
+No Fedora, tenha Docker ou Podman com compatibilidade Docker Compose instalado e o usuario com permissao para executar containers.
+
 1. Copie o arquivo de ambiente:
 
 ```bash
@@ -88,6 +90,7 @@ Controles implementados:
 
 - JWT com expiracao, issuer e audience.
 - Validacao do payload do token antes de liberar rotas protegidas.
+- Sessoes persistidas por hash do token, com validacao em toda rota protegida e logout com revogacao.
 - RBAC para rotas administrativas e menu Admin visivel apenas para administradores.
 - Login administrativo com bcrypt.
 - Rate limit global e rate limit especifico para autenticacao.
@@ -137,6 +140,7 @@ O schema tambem define checks de integridade e indices para logs, historico de I
 - Suporte Premium consulta ONU Huawei, exibe sinal/status, altera Wi-Fi e permite reinicio auditado.
 - IA explica faturas, planos, Wi-Fi e testes basicos, orientando atendimento humano quando necessario.
 - Painel admin concentra integracoes, metricas, avisos, logs e permissoes.
+- Administradores podem publicar avisos para assinantes com auditoria.
 
 ## Checklist para producao
 

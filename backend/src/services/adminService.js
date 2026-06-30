@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { createAuditLog } from '../repositories/auditRepository.js';
 import { createNotice } from '../repositories/noticeRepository.js';
 
 export const noticeSchema = z.object({
@@ -25,6 +26,15 @@ export async function getAdminOverview() {
   };
 }
 
-export async function publishNotice(payload) {
-  return createNotice(payload);
+export async function publishNotice(payload, actor) {
+  const notice = await createNotice(payload);
+
+  await createAuditLog({
+    actorId: actor?.sub,
+    actorType: 'admin',
+    action: 'admin.notice.create',
+    metadata: { noticeId: notice.id, severity: notice.severity }
+  });
+
+  return notice;
 }

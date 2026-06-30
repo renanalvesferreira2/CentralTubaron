@@ -65,4 +65,5 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs (created_at D
 CREATE INDEX IF NOT EXISTS idx_ai_history_customer_id ON ai_history (customer_id);
 CREATE INDEX IF NOT EXISTS idx_ai_history_created_at ON ai_history (created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions (expires_at);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_sessions_token_hash ON sessions (token_hash);
 CREATE INDEX IF NOT EXISTS idx_notices_active_created_at ON notices (active, created_at DESC);

@@ -1,13 +1,19 @@
 import { Activity, AlertTriangle, LockKeyhole, ShieldCheck } from 'lucide-react';
 import { Card } from '../components/Card.jsx';
 import { MetricCard } from '../components/MetricCard.jsx';
+import { NoticeForm } from '../components/NoticeForm.jsx';
 import { Skeleton } from '../components/Skeleton.jsx';
 import { StatusBadge } from '../components/StatusBadge.jsx';
 import { useAsync } from '../hooks/useAsync.js';
-import { getAdminOverview } from '../services/adminService.js';
+import { createNotice, getAdminOverview } from '../services/adminService.js';
 
 export function AdminPage() {
-  const { data, loading, error } = useAsync(getAdminOverview, []);
+  const { data, loading, error, reload } = useAsync(getAdminOverview, []);
+
+  async function publishNotice(payload) {
+    await createNotice(payload);
+    await reload();
+  }
 
   if (loading) return <Skeleton rows={4} />;
 
@@ -50,6 +56,10 @@ export function AdminPage() {
             </article>
           ))}
         </div>
+      </Card>
+
+      <Card>
+        <NoticeForm onSubmit={publishNotice} />
       </Card>
     </div>
   );

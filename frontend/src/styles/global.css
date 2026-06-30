@@ -46,7 +46,9 @@ body {
 }
 
 button,
-input {
+input,
+select,
+textarea {
   font: inherit;
 }
 
@@ -162,7 +164,9 @@ label {
   font-weight: 700;
 }
 
-input {
+input,
+select,
+textarea {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -172,7 +176,14 @@ input {
   outline: none;
 }
 
-input:focus {
+textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
 }
@@ -450,6 +461,12 @@ input:focus {
   grid-template-columns: 1fr 1fr auto;
   gap: 14px;
   align-items: end;
+}
+
+.notice-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
 }
 
 .success-text {

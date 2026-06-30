@@ -13,3 +13,7 @@ export async function adminLogin(email, password) {
     body: JSON.stringify({ email, password })
   });
 }
+
+export async function logout() {
+  return api('/auth/logout', { method: 'POST' });
+}

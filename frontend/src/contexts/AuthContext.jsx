@@ -1,5 +1,9 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { adminLogin as adminLoginRequest, login as loginRequest } from '../services/authService.js';
+import {
+  adminLogin as adminLoginRequest,
+  login as loginRequest,
+  logout as logoutRequest
+} from '../services/authService.js';
 
 const AuthContext = createContext(null);
 
@@ -33,15 +37,23 @@ export function AuthProvider({ children }) {
     setCustomer(user);
   }
 
-  function logout() {
+  function clearSession() {
     localStorage.removeItem('tubaron.token');
     localStorage.removeItem('tubaron.customer');
     setCustomer(null);
   }
 
+  async function logout() {
+    try {
+      await logoutRequest();
+    } finally {
+      clearSession();
+    }
+  }
+
   useEffect(() => {
-    window.addEventListener('tubaron:logout', logout);
-    return () => window.removeEventListener('tubaron:logout', logout);
+    window.addEventListener('tubaron:logout', clearSession);
+    return () => window.removeEventListener('tubaron:logout', clearSession);
   }, []);
 
   const value = useMemo(

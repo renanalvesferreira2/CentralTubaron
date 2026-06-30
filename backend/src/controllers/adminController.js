@@ -5,5 +5,5 @@ export async function overview(_req, res) {
 }
 
 export async function createNotice(req, res) {
-  res.status(201).json(await publishNotice(req.validated.body));
+  res.status(201).json(await publishNotice(req.validated.body, req.user));
 }
