@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Button } from './Button.jsx';
 import { defaultFlowId, serviceFlows, summaryIcon as SummaryIcon } from '../data/serviceFlows.js';
+import { createSupportRequest } from '../services/supportService.js';
 
 const whatsappNumber = import.meta.env.VITE_WHATSAPP_NUMBER || '555195624380';
 
@@ -38,6 +39,14 @@ export function SmartServiceCenter({ account }) {
   const [copied, setCopied] = useState(false);
   const flow = serviceFlows.find((item) => item.id === flowId) || serviceFlows[0];
   const Summary = SummaryIcon;
+  const openInvoice = account.invoices?.some((invoice) => invoice.status !== 'Paga');
+  const suggestedFlows = new Set([
+    ...(openInvoice ? ['financeiro'] : []),
+    account.summary?.connectionStatus === 'Offline' ? 'internet' : 'wifi',
+    'humano'
+  ]);
+  const answeredQuestions = flow.questions.filter((question) => (answers[question.id] || []).length).length;
+  const progress = Math.round((answeredQuestions / flow.questions.length) * 100);
 
   const summary = useMemo(() => buildSummary({ flow, answers, note, account }), [account, answers, flow, note]);
   const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(summary)}`;
@@ -64,8 +73,25 @@ export function SmartServiceCenter({ account }) {
     });
   }
 
+  async function registerTriage() {
+    try {
+      await createSupportRequest({
+        category: flow.id,
+        summary,
+        metadata: {
+          answeredQuestions,
+          flowTitle: flow.title,
+          source: 'smart-center'
+        }
+      });
+    } catch {
+      // O cliente nao deve ser bloqueado se o registro interno falhar.
+    }
+  }
+
   async function copySummary() {
     try {
+      await registerTriage();
       await navigator.clipboard.writeText(summary);
       setCopied(true);
     } catch {
@@ -80,7 +106,7 @@ export function SmartServiceCenter({ account }) {
           <span className="eyebrow">Central guiada</span>
           <h2>Escolha o que quer resolver</h2>
         </div>
-        <span>Triagem com contexto da conta</span>
+        <span>{answeredQuestions} de {flow.questions.length} respostas</span>
       </div>
 
       <div className="smart-center-grid">
@@ -94,12 +120,17 @@ export function SmartServiceCenter({ account }) {
                   <strong>{item.title}</strong>
                   <small>{item.tag}</small>
                 </span>
+                {suggestedFlows.has(item.id) && <em>Sugerido</em>}
               </button>
             );
           })}
         </div>
 
         <div className="flow-detail">
+          <div className="flow-progress" aria-label={`Triagem ${progress}% completa`}>
+            <span style={{ width: `${progress}%` }} />
+          </div>
+
           <div className="flow-header">
             <span>{flow.tag}</span>
             <h3>{flow.title}</h3>
@@ -110,6 +141,7 @@ export function SmartServiceCenter({ account }) {
             {flow.questions.map((question) => (
               <fieldset key={question.id}>
                 <legend>{question.label}</legend>
+                <small>Marque uma ou mais opcoes.</small>
                 <div className="answer-grid">
                   {question.options.map((option) => {
                     const checked = (answers[question.id] || []).includes(option);
@@ -147,11 +179,19 @@ export function SmartServiceCenter({ account }) {
             <p>{flow.recommendation}</p>
           </div>
 
+          <details className="summary-preview">
+            <summary>
+              <strong>Ver resumo que sera enviado</strong>
+              <span>Atualiza automaticamente</span>
+            </summary>
+            <pre>{summary}</pre>
+          </details>
+
           <div className="summary-actions">
             <Button onClick={copySummary} variant="secondary">
               <Summary size={17} /> {copied ? 'Resumo copiado' : 'Copiar resumo'}
             </Button>
-            <a className="btn btn-primary" href={whatsappUrl} target="_blank" rel="noreferrer">
+            <a className="btn btn-primary" href={whatsappUrl} onClick={registerTriage} target="_blank" rel="noreferrer">
               <Summary size={17} /> Enviar pelo WhatsApp
             </a>
           </div>

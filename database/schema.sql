@@ -61,9 +61,21 @@ CREATE TABLE IF NOT EXISTS customer_preferences (
   CONSTRAINT customer_preferences_theme_check CHECK (theme IN ('light', 'dark'))
 );
 
+CREATE TABLE IF NOT EXISTS support_requests (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  customer_id VARCHAR(120) NOT NULL,
+  category VARCHAR(80) NOT NULL,
+  summary TEXT NOT NULL,
+  status VARCHAR(30) NOT NULL DEFAULT 'new',
+  metadata JSONB DEFAULT '{}',
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  CONSTRAINT support_requests_status_check CHECK (status IN ('new', 'sent', 'closed'))
+);
+
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs (created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_ai_history_customer_id ON ai_history (customer_id);
 CREATE INDEX IF NOT EXISTS idx_ai_history_created_at ON ai_history (created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions (expires_at);
 CREATE UNIQUE INDEX IF NOT EXISTS idx_sessions_token_hash ON sessions (token_hash);
 CREATE INDEX IF NOT EXISTS idx_notices_active_created_at ON notices (active, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_support_requests_customer_created_at ON support_requests (customer_id, created_at DESC);

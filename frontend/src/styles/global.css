@@ -563,6 +563,21 @@ textarea:focus {
   text-align: left;
 }
 
+.flow-list button > span {
+  min-width: 0;
+  flex: 1;
+}
+
+.flow-list em {
+  border-radius: 999px;
+  padding: 4px 7px;
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  color: var(--accent);
+  font-size: 0.68rem;
+  font-style: normal;
+  font-weight: 900;
+}
+
 .flow-list button.active {
   border-color: color-mix(in srgb, var(--primary) 55%, var(--line));
   background: color-mix(in srgb, var(--primary) 12%, var(--panel));
@@ -582,6 +597,21 @@ textarea:focus {
   display: grid;
   gap: 16px;
   min-width: 0;
+}
+
+.flow-progress {
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--panel-soft);
+}
+
+.flow-progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--primary), var(--primary-strong));
+  transition: width 0.2s ease;
 }
 
 .flow-header {
@@ -618,6 +648,11 @@ fieldset {
   border-radius: 8px;
   margin: 0;
   padding: 14px;
+}
+
+fieldset > small {
+  display: block;
+  margin-top: 4px;
 }
 
 legend {
@@ -670,6 +705,46 @@ legend {
 .central-recommendation p {
   margin: 0;
   color: var(--muted);
+}
+
+.summary-preview {
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: var(--panel-soft);
+}
+
+.summary-preview summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  cursor: pointer;
+  list-style: none;
+}
+
+.summary-preview summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary-preview summary span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.summary-preview pre {
+  max-height: 220px;
+  margin-top: 10px;
+  overflow: auto;
+  margin: 0;
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--panel);
+  color: var(--text);
+  font: 0.88rem/1.5 ui-monospace, SFMono-Regular, Consolas, monospace;
+  white-space: pre-wrap;
 }
 
 .summary-actions {

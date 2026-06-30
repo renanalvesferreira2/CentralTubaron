@@ -14,3 +14,10 @@ export function updateWifi(payload) {
 export function rebootOnu() {
   return api('/support/reboot', { method: 'POST' });
 }
+
+export function createSupportRequest(payload) {
+  return api('/support/requests', {
+    method: 'POST',
+    body: JSON.stringify(payload)
+  });
+}

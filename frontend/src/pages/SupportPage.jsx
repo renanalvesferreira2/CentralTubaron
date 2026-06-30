@@ -1,18 +1,12 @@
-import { Banknote, MessageCircle, Power, Router, Save, Signal, Tv, UserRound, Wifi } from 'lucide-react';
+import { MessageCircle, Power, Router, Save, Signal, Wifi } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../components/Button.jsx';
 import { Card } from '../components/Card.jsx';
 import { Skeleton } from '../components/Skeleton.jsx';
 import { StatusBadge } from '../components/StatusBadge.jsx';
+import { serviceFlows } from '../data/serviceFlows.js';
 import { useAsync } from '../hooks/useAsync.js';
 import { getPremiumSupport, rebootOnu, updateWifi } from '../services/supportService.js';
-
-const serviceFlows = [
-  { icon: Wifi, title: 'Internet e Wi-Fi', text: 'Lentidao, quedas, senha, alcance e equipamentos.' },
-  { icon: Banknote, title: 'Financeiro', text: 'Fatura, PIX, comprovante, desbloqueio e negociacao.' },
-  { icon: Tv, title: 'TV e aplicativos', text: 'Login, travamentos, canal sem imagem e aplicativo.' },
-  { icon: UserRound, title: 'Cadastro e contrato', text: 'Dados cadastrais, mudanca de endereco e titularidade.' }
-];
 
 export function SupportPage() {
   const { data, loading, error, reload } = useAsync(getPremiumSupport, []);
@@ -65,14 +59,14 @@ export function SupportPage() {
       </div>
 
       <section className="service-grid">
-        {serviceFlows.map((item) => {
+        {serviceFlows.slice(0, 4).map((item) => {
           const Icon = item.icon;
           return (
             <article className="service-card" key={item.title}>
               <div className="service-icon"><Icon size={21} /></div>
               <div>
                 <h2>{item.title}</h2>
-                <p>{item.text}</p>
+                <p>{item.description}</p>
               </div>
             </article>
           );

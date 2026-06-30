@@ -135,6 +135,7 @@ O schema inicial cria tabelas para:
 - Sessoes
 - Auditoria
 - Historico de IA
+- Solicitacoes de atendimento
 - Configuracoes
 - Avisos
 - Preferencias do cliente
@@ -147,7 +148,7 @@ O schema tambem define checks de integridade e indices para logs, historico de I
 - Admin entra pelo modo administrativo do login e acessa o painel protegido.
 - Central inicial mostra status da conexao, plano, vencimento, faturas e triagem guiada.
 - Faturas exibem PIX/codigo de barras quando retornados pelo IXC e permitem copiar o PIX.
-- Atendimento inteligente coleta sintomas, gera resumo com contexto da conta e abre WhatsApp.
+- Atendimento inteligente coleta sintomas, registra a solicitacao, gera resumo com contexto da conta e abre WhatsApp.
 - Suporte tecnico consulta ONU Huawei, exibe sinal/status, altera Wi-Fi e permite reinicio auditado.
 - IA explica faturas, planos, Wi-Fi e testes basicos, orientando atendimento humano quando necessario.
 - Painel admin concentra integracoes, metricas, avisos, logs e permissoes.
