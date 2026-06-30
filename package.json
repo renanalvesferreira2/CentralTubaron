@@ -1,0 +1,12 @@
+{
+  "name": "central-tubaron",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev:backend": "pnpm --dir backend dev",
+    "dev:frontend": "pnpm --dir frontend dev",
+    "check": "pnpm --dir backend lint && pnpm --dir frontend build",
+    "build": "pnpm --dir frontend build"
+  }
+}

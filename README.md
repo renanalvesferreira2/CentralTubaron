@@ -52,6 +52,15 @@ npm install
 npm run dev
 ```
 
+Com `pnpm` instalado no Fedora, tambem e possivel usar os atalhos da raiz:
+
+```bash
+pnpm install
+pnpm dev:backend
+pnpm dev:frontend
+pnpm check
+```
+
 ## Variaveis de ambiente
 
 Todas as informacoes sensiveis ficam fora do codigo e devem ser configuradas por ambiente.
