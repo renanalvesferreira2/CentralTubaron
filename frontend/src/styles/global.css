@@ -54,6 +54,11 @@ button {
   cursor: pointer;
 }
 
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.68;
+}
+
 .login-page {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(340px, 440px);
@@ -221,6 +226,31 @@ input:focus {
   padding: 12px;
   background: color-mix(in srgb, var(--danger) 12%, transparent);
   color: var(--danger);
+}
+
+.segmented-control {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 4px;
+  background: var(--panel-soft);
+}
+
+.segmented-control button {
+  min-height: 38px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.segmented-control button.active {
+  background: var(--panel);
+  color: var(--text);
+  box-shadow: 0 6px 18px rgba(22, 35, 33, 0.10);
 }
 
 .app-shell {

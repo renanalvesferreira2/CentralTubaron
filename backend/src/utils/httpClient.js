@@ -6,12 +6,17 @@ function assertSafeUrl(url, allowedHost) {
   const parsed = new URL(url);
 
   if (!SAFE_PROTOCOLS.has(parsed.protocol)) {
-    throw new AppError('URL externa bloqueada por política de segurança.', 500);
+    throw new AppError('URL externa bloqueada por politica de seguranca.', 500);
   }
 
   if (allowedHost && parsed.hostname !== allowedHost) {
-    throw new AppError('Host externo não autorizado.', 500);
+    throw new AppError('Host externo nao autorizado.', 500);
   }
+}
+
+function safeLogUrl(url) {
+  const parsed = new URL(url);
+  return `${parsed.origin}${parsed.pathname}`;
 }
 
 function wait(ms) {
@@ -41,19 +46,29 @@ export async function requestJson(url, options = {}) {
       });
 
       const text = await response.text();
-      const data = text ? JSON.parse(text) : null;
+      let data = null;
+
+      try {
+        data = text ? JSON.parse(text) : null;
+      } catch {
+        throw new AppError('Integracao externa retornou uma resposta invalida.', 502);
+      }
 
       if (!response.ok) {
-        throw new AppError('Falha na comunicação com integração externa.', 502, data);
+        throw new AppError('Falha na comunicacao com integracao externa.', 502, data);
       }
 
       return data;
     } catch (error) {
-      console.warn('Integration request failed', { url, attempt: attempt + 1, error: error.message });
+      console.warn('Integration request failed', {
+        url: safeLogUrl(url),
+        attempt: attempt + 1,
+        error: error.message
+      });
 
       if (attempt === retries) {
         throw error.name === 'AbortError'
-          ? new AppError('Tempo limite excedido na integração externa.', 504)
+          ? new AppError('Tempo limite excedido na integracao externa.', 504)
           : error;
       }
 

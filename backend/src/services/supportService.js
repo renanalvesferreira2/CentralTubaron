@@ -4,9 +4,9 @@ import { createAuditLog } from '../repositories/auditRepository.js';
 
 export const wifiSchema = z.object({
   body: z.object({
-    ssid: z.string().min(3).max(32),
+    ssid: z.string().trim().min(3).max(32).regex(/^[\w .-]+$/, 'Nome de rede contem caracteres invalidos.'),
     password: z.string().min(8).max(64)
-  })
+  }).strict()
 });
 
 export async function getPremiumSupport(customerId) {
@@ -16,8 +16,8 @@ export async function getPremiumSupport(customerId) {
   return {
     onu,
     checks: [
-      { label: 'Sinal óptico', status: signalValue >= -27 ? 'ok' : 'attention' },
-      { label: 'Autenticação', status: onu.status === 'Online' ? 'ok' : 'attention' },
+      { label: 'Sinal optico', status: signalValue >= -27 ? 'ok' : 'attention' },
+      { label: 'Autenticacao', status: onu.status === 'Online' ? 'ok' : 'attention' },
       { label: 'Wi-Fi principal', status: onu.wifi?.ssid ? 'ok' : 'attention' }
     ]
   };

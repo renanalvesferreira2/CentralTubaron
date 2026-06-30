@@ -12,18 +12,37 @@ export function SupportPage() {
   const [ssid, setSsid] = useState('');
   const [password, setPassword] = useState('');
   const [message, setMessage] = useState('');
+  const [actionLoading, setActionLoading] = useState(false);
 
   async function saveWifi(event) {
     event.preventDefault();
     setMessage('');
-    await updateWifi({ ssid, password });
-    setMessage('Wi-Fi atualizado com segurança. Pode levar alguns minutos para refletir na ONU.');
-    reload();
+    setActionLoading(true);
+
+    try {
+      await updateWifi({ ssid, password });
+      setMessage('Wi-Fi atualizado com seguranca. Pode levar alguns minutos para refletir na ONU.');
+      setPassword('');
+      await reload();
+    } catch (err) {
+      setMessage(err.message);
+    } finally {
+      setActionLoading(false);
+    }
   }
 
   async function restart() {
-    await rebootOnu();
-    setMessage('Reinicialização solicitada. A conexão pode oscilar por alguns minutos.');
+    setMessage('');
+    setActionLoading(true);
+
+    try {
+      await rebootOnu();
+      setMessage('Reinicializacao solicitada. A conexao pode oscilar por alguns minutos.');
+    } catch (err) {
+      setMessage(err.message);
+    } finally {
+      setActionLoading(false);
+    }
   }
 
   if (loading) return <Skeleton rows={5} />;
@@ -35,26 +54,26 @@ export function SupportPage() {
     <div className="stack">
       <div className="page-heading">
         <h1>Suporte Premium</h1>
-        <p>Controles sensíveis passam exclusivamente pelo backend, com auditoria e permissões.</p>
+        <p>Controles sensiveis passam exclusivamente pelo backend, com auditoria e permissoes.</p>
       </div>
 
       <div className="metrics">
         <Card className="metric-card"><Router /> <div><span>ONU</span><strong>{onu.serial}</strong><small>{onu.uptime}</small></div></Card>
-        <Card className="metric-card"><Signal /> <div><span>Sinal</span><strong>{onu.signal}</strong><small>Potência óptica</small></div></Card>
+        <Card className="metric-card"><Signal /> <div><span>Sinal</span><strong>{onu.signal}</strong><small>Potencia optica</small></div></Card>
         <Card className="metric-card"><Wifi /> <div><span>Wi-Fi</span><strong>{onu.wifi.ssid}</strong><small>{onu.wifi.band}</small></div></Card>
         <Card className="metric-card"><Power /> <div><span>Status</span><strong>{onu.status}</strong><small>Monitorado</small></div></Card>
       </div>
 
       <Card>
         <div className="section-title">
-          <h2>Diagnóstico rápido</h2>
+          <h2>Diagnostico rapido</h2>
           <StatusBadge>{onu.status}</StatusBadge>
         </div>
         <div className="compact-list">
           {data.checks.map((check) => (
             <div key={check.label}>
               <strong>{check.label}</strong>
-              <StatusBadge tone={check.status === 'ok' ? 'ok' : 'warning'}>{check.status === 'ok' ? 'Normal' : 'Atenção'}</StatusBadge>
+              <StatusBadge tone={check.status === 'ok' ? 'ok' : 'warning'}>{check.status === 'ok' ? 'Normal' : 'Atencao'}</StatusBadge>
             </div>
           ))}
         </div>
@@ -63,12 +82,12 @@ export function SupportPage() {
       <Card>
         <div className="section-title"><h2>Alterar Wi-Fi</h2></div>
         <form className="form-grid" onSubmit={saveWifi}>
-          <label>Nome da rede<input value={ssid} onChange={(event) => setSsid(event.target.value)} placeholder={onu.wifi.ssid} /></label>
-          <label>Nova senha<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Mínimo 8 caracteres" /></label>
-          <Button><Save size={17} /> Salvar Wi-Fi</Button>
+          <label>Nome da rede<input value={ssid} onChange={(event) => setSsid(event.target.value)} placeholder={onu.wifi.ssid} required /></label>
+          <label>Nova senha<input type="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Minimo 8 caracteres" minLength={8} required /></label>
+          <Button disabled={actionLoading}><Save size={17} /> Salvar Wi-Fi</Button>
         </form>
         <div className="action-row">
-          <Button variant="secondary" onClick={restart}><Power size={17} /> Reiniciar ONU</Button>
+          <Button variant="secondary" onClick={restart} disabled={actionLoading}><Power size={17} /> Reiniciar ONU</Button>
           {message && <span className="success-text">{message}</span>}
         </div>
       </Card>

@@ -18,7 +18,7 @@ export function DashboardPage() {
         <div>
           <span className="eyebrow">Resumo da conta</span>
           <h1>{data.customer.plan}</h1>
-          <p>Conexão {data.summary.connectionStatus.toLowerCase()}, próximo vencimento em {data.summary.nextDueDate}.</p>
+          <p>Conexao {data.summary.connectionStatus.toLowerCase()}, proximo vencimento em {data.summary.nextDueDate || 'sem fatura aberta'}.</p>
         </div>
         <StatusBadge>{data.customer.status}</StatusBadge>
       </section>
@@ -26,13 +26,13 @@ export function DashboardPage() {
       <div className="metrics">
         <MetricCard icon={Wifi} label="Internet" value={data.summary.connectionStatus} detail={data.customer.connection.signal} />
         <MetricCard icon={Gauge} label="Consumo" value={data.customer.connection.consumption} detail="Ciclo atual" />
-        <MetricCard icon={CalendarClock} label="Vencimento" value={data.summary.nextDueDate} detail={`R$ ${data.summary.nextAmount}`} />
-        <MetricCard icon={ReceiptText} label="Faturas" value={data.invoices.length} detail="Histórico disponível" />
+        <MetricCard icon={CalendarClock} label="Vencimento" value={data.summary.nextDueDate || '-'} detail={data.summary.nextAmount ? `R$ ${data.summary.nextAmount}` : 'Sem valor aberto'} />
+        <MetricCard icon={ReceiptText} label="Faturas" value={data.invoices.length} detail="Historico disponivel" />
       </div>
 
       <Card className="wide">
         <div className="section-title">
-          <h2>Avisos e próximos passos</h2>
+          <h2>Avisos e proximos passos</h2>
           <span>Atualizado agora</span>
         </div>
         <div className="notice-list">
@@ -44,7 +44,7 @@ export function DashboardPage() {
           )) : (
             <article>
               <strong>Tudo certo por aqui</strong>
-              <p>Não há avisos críticos para sua conta neste momento.</p>
+              <p>Nao ha avisos criticos para sua conta neste momento.</p>
             </article>
           )}
         </div>
@@ -53,13 +53,13 @@ export function DashboardPage() {
       <Card>
         <Headphones size={22} />
         <h2>Suporte Premium</h2>
-        <p>Gerencie Wi-Fi, acompanhe sinal da ONU e reinicie equipamentos com segurança pelo backend.</p>
+        <p>Gerencie Wi-Fi, acompanhe sinal da ONU e reinicie equipamentos com seguranca pelo backend.</p>
       </Card>
 
       <Card>
         <Bot size={22} />
         <h2>Assistente IA</h2>
-        <p>Receba explicações claras sobre faturas, planos, Wi-Fi e testes antes de abrir um chamado.</p>
+        <p>Receba explicacoes claras sobre faturas, planos, Wi-Fi e testes antes de abrir um chamado.</p>
       </Card>
     </div>
   );

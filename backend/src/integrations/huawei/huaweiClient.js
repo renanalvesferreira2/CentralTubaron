@@ -1,6 +1,6 @@
 import { env } from '../../config/env.js';
 import { requestJson } from '../../utils/httpClient.js';
-import { getHost } from '../../utils/url.js';
+import { buildIntegrationUrl, getHost } from '../../utils/url.js';
 import { mockOnu } from './huaweiMock.js';
 
 function authHeaders() {
@@ -10,7 +10,7 @@ function authHeaders() {
 export async function getOnu(customerId) {
   if (env.huawei.useMock) return { ...mockOnu, customerId };
 
-  return requestJson(`${env.huawei.baseUrl}/onus/${customerId}`, {
+  return requestJson(buildIntegrationUrl(env.huawei.baseUrl, `onus/${encodeURIComponent(customerId)}`), {
     headers: authHeaders(),
     allowedHost: getHost(env.huawei.baseUrl),
     retries: 1
@@ -20,7 +20,7 @@ export async function getOnu(customerId) {
 export async function updateWifi(customerId, payload) {
   if (env.huawei.useMock) return { ...mockOnu, customerId, wifi: { ...mockOnu.wifi, ...payload } };
 
-  return requestJson(`${env.huawei.baseUrl}/onus/${customerId}/wifi`, {
+  return requestJson(buildIntegrationUrl(env.huawei.baseUrl, `onus/${encodeURIComponent(customerId)}/wifi`), {
     method: 'PATCH',
     headers: authHeaders(),
     body: JSON.stringify(payload),
@@ -32,7 +32,7 @@ export async function updateWifi(customerId, payload) {
 export async function rebootOnu(customerId) {
   if (env.huawei.useMock) return { status: 'scheduled', customerId };
 
-  return requestJson(`${env.huawei.baseUrl}/onus/${customerId}/reboot`, {
+  return requestJson(buildIntegrationUrl(env.huawei.baseUrl, `onus/${encodeURIComponent(customerId)}/reboot`), {
     method: 'POST',
     headers: authHeaders(),
     allowedHost: getHost(env.huawei.baseUrl),

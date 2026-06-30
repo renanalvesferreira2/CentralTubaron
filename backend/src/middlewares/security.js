@@ -3,6 +3,8 @@ import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { env } from '../config/env.js';
 
+const allowedOrigins = env.frontendUrl.split(',').map((origin) => origin.trim()).filter(Boolean);
+
 export const securityMiddlewares = [
   helmet({
     contentSecurityPolicy: {
@@ -12,13 +14,22 @@ export const securityMiddlewares = [
         frameAncestors: ["'none'"]
       }
     },
+    crossOriginResourcePolicy: { policy: 'same-site' },
     referrerPolicy: { policy: 'no-referrer' }
   }),
   cors({
-    origin: env.frontendUrl,
-    credentials: true,
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error('Origem nao autorizada pelo CORS.'));
+    },
+    credentials: false,
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    maxAge: 600
   }),
   rateLimit({
     windowMs: 15 * 60 * 1000,

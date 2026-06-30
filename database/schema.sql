@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS admin_users (
   email VARCHAR(160) UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
   role VARCHAR(40) NOT NULL DEFAULT 'admin',
-  created_at TIMESTAMP NOT NULL DEFAULT NOW()
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  CONSTRAINT admin_users_role_check CHECK (role IN ('admin'))
 );
 
 CREATE TABLE IF NOT EXISTS sessions (
@@ -15,7 +16,8 @@ CREATE TABLE IF NOT EXISTS sessions (
   subject_type VARCHAR(30) NOT NULL,
   token_hash TEXT NOT NULL,
   expires_at TIMESTAMP NOT NULL,
-  created_at TIMESTAMP NOT NULL DEFAULT NOW()
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  CONSTRAINT sessions_subject_type_check CHECK (subject_type IN ('admin', 'customer'))
 );
 
 CREATE TABLE IF NOT EXISTS audit_logs (
@@ -47,15 +49,20 @@ CREATE TABLE IF NOT EXISTS notices (
   message TEXT NOT NULL,
   severity VARCHAR(20) NOT NULL DEFAULT 'info',
   active BOOLEAN NOT NULL DEFAULT true,
-  created_at TIMESTAMP NOT NULL DEFAULT NOW()
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  CONSTRAINT notices_severity_check CHECK (severity IN ('info', 'warning', 'critical'))
 );
 
 CREATE TABLE IF NOT EXISTS customer_preferences (
   customer_id VARCHAR(120) PRIMARY KEY,
   theme VARCHAR(20) NOT NULL DEFAULT 'light',
   channels JSONB DEFAULT '{}',
-  updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+  updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+  CONSTRAINT customer_preferences_theme_check CHECK (theme IN ('light', 'dark'))
 );
 
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs (created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_ai_history_customer_id ON ai_history (customer_id);
+CREATE INDEX IF NOT EXISTS idx_ai_history_created_at ON ai_history (created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions (expires_at);
+CREATE INDEX IF NOT EXISTS idx_notices_active_created_at ON notices (active, created_at DESC);

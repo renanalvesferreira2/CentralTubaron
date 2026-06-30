@@ -3,10 +3,10 @@ import { createNotice } from '../repositories/noticeRepository.js';
 
 export const noticeSchema = z.object({
   body: z.object({
-    title: z.string().min(3).max(160),
-    message: z.string().min(5).max(1000),
+    title: z.string().trim().min(3).max(160),
+    message: z.string().trim().min(5).max(1000),
     severity: z.enum(['info', 'warning', 'critical']).default('info')
-  })
+  }).strict()
 });
 
 export async function getAdminOverview() {

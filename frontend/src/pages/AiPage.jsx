@@ -5,9 +5,9 @@ import { Card } from '../components/Card.jsx';
 import { askAi } from '../services/aiService.js';
 
 const suggestions = [
-  'Explique minha próxima fatura',
-  'Qual a diferença entre Wi-Fi 2.4 GHz e 5 GHz?',
-  'Minha internet está lenta, o que posso testar?'
+  'Explique minha proxima fatura',
+  'Qual a diferenca entre Wi-Fi 2.4 GHz e 5 GHz?',
+  'Minha internet esta lenta, o que posso testar?'
 ];
 
 export function AiPage() {
@@ -17,11 +17,13 @@ export function AiPage() {
 
   async function submit(event) {
     event.preventDefault();
-    if (!prompt.trim()) return;
+    const question = prompt.trim();
+    if (!question || loading) return;
+
     setLoading(true);
-    const question = prompt;
     setMessages((current) => [...current, { type: 'user', text: question }]);
     setPrompt('');
+
     try {
       const response = await askAi(question);
       setMessages((current) => [...current, { type: 'ai', text: response.answer }]);
@@ -36,7 +38,7 @@ export function AiPage() {
     <div className="stack">
       <div className="page-heading">
         <h1>Assistente inteligente</h1>
-        <p>Orientação objetiva antes da abertura de chamados, sempre com encaminhamento humano quando necessário.</p>
+        <p>Orientacao objetiva antes da abertura de chamados, sempre com encaminhamento humano quando necessario.</p>
       </div>
       <Card className="chat-card">
         <div className="suggestions">
@@ -46,11 +48,11 @@ export function AiPage() {
           {messages.map((message, index) => (
             <div className={`message ${message.type}`} key={`${message.type}-${index}`}>{message.text}</div>
           ))}
-          {!messages.length && <div className="message ai">Olá! Posso ajudar com faturas, planos, Wi-Fi e testes básicos.</div>}
+          {!messages.length && <div className="message ai">Ola! Posso ajudar com faturas, planos, Wi-Fi e testes basicos.</div>}
         </div>
         <form className="chat-form" onSubmit={submit}>
-          <input value={prompt} onChange={(event) => setPrompt(event.target.value)} placeholder="Digite sua dúvida..." />
-          <Button disabled={loading}><Send size={17} /> {loading ? 'Enviando' : 'Enviar'}</Button>
+          <input value={prompt} onChange={(event) => setPrompt(event.target.value)} placeholder="Digite sua duvida..." maxLength={1200} />
+          <Button disabled={loading || !prompt.trim()}><Send size={17} /> {loading ? 'Enviando' : 'Enviar'}</Button>
         </form>
       </Card>
     </div>

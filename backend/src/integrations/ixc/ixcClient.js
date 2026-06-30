@@ -1,6 +1,6 @@
 import { env } from '../../config/env.js';
 import { requestJson } from '../../utils/httpClient.js';
-import { getHost } from '../../utils/url.js';
+import { buildIntegrationUrl, getHost } from '../../utils/url.js';
 import { mockContracts, mockCustomer, mockInvoices } from './ixcMock.js';
 
 function authHeaders() {
@@ -10,7 +10,7 @@ function authHeaders() {
 export async function findCustomer(identifier) {
   if (env.ixc.useMock) return { ...mockCustomer, identifier };
 
-  return requestJson(`${env.ixc.baseUrl}/cliente?busca=${encodeURIComponent(identifier)}`, {
+  return requestJson(buildIntegrationUrl(env.ixc.baseUrl, 'cliente', { busca: identifier }), {
     headers: authHeaders(),
     allowedHost: getHost(env.ixc.baseUrl),
     retries: 2
@@ -20,7 +20,7 @@ export async function findCustomer(identifier) {
 export async function authenticateCustomer(identifier, password) {
   if (env.ixc.useMock) return password.length >= 4 ? { ...mockCustomer, identifier } : null;
 
-  return requestJson(`${env.ixc.baseUrl}/central_assinante/login`, {
+  return requestJson(buildIntegrationUrl(env.ixc.baseUrl, 'central_assinante/login'), {
     method: 'POST',
     headers: authHeaders(),
     body: JSON.stringify({ identifier, password }),
@@ -32,7 +32,7 @@ export async function authenticateCustomer(identifier, password) {
 export async function getContracts(customerId) {
   if (env.ixc.useMock) return mockContracts;
 
-  return requestJson(`${env.ixc.baseUrl}/cliente_contrato?cliente_id=${customerId}`, {
+  return requestJson(buildIntegrationUrl(env.ixc.baseUrl, 'cliente_contrato', { cliente_id: customerId }), {
     headers: authHeaders(),
     allowedHost: getHost(env.ixc.baseUrl),
     retries: 2
@@ -42,7 +42,7 @@ export async function getContracts(customerId) {
 export async function getInvoices(customerId) {
   if (env.ixc.useMock) return mockInvoices;
 
-  return requestJson(`${env.ixc.baseUrl}/fn_areceber?cliente_id=${customerId}`, {
+  return requestJson(buildIntegrationUrl(env.ixc.baseUrl, 'fn_areceber', { cliente_id: customerId }), {
     headers: authHeaders(),
     allowedHost: getHost(env.ixc.baseUrl),
     retries: 2

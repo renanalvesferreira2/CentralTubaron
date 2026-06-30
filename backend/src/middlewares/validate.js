@@ -9,7 +9,7 @@ export function validate(schema) {
     });
 
     if (!result.success) {
-      throw new AppError('Dados inválidos. Verifique as informações enviadas.', 400, result.error.flatten());
+      throw new AppError('Dados invalidos. Verifique as informacoes enviadas.', 400, result.error.flatten());
     }
 
     req.validated = result.data;

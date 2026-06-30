@@ -7,11 +7,11 @@ export function errorHandler(error, req, res, _next) {
     method: req.method,
     statusCode,
     message: error.message,
-    details: error.details
+    details: isProduction ? undefined : error.details
   });
 
   res.status(statusCode).json({
-    message: error.isOperational ? error.message : 'Não foi possível concluir a solicitação.',
+    message: error.isOperational ? error.message : 'Nao foi possivel concluir a solicitacao.',
     details: isProduction ? undefined : error.details
   });
 }

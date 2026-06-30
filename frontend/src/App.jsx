@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AppLayout } from './layouts/AppLayout.jsx';
 import { AdminPage } from './pages/AdminPage.jsx';
 import { AiPage } from './pages/AiPage.jsx';
@@ -17,8 +17,14 @@ const pages = {
 };
 
 export function App() {
-  const { signedIn } = useAuth();
+  const { isAdmin, signedIn } = useAuth();
   const [page, setPage] = useState('dashboard');
+
+  useEffect(() => {
+    if (page === 'admin' && !isAdmin) {
+      setPage('dashboard');
+    }
+  }, [isAdmin, page]);
 
   if (!signedIn) return <LoginPage />;
 

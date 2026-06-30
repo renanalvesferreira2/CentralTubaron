@@ -3,16 +3,17 @@ import { useAuth } from '../contexts/AuthContext.jsx';
 import { useTheme } from '../contexts/ThemeContext.jsx';
 
 const nav = [
-  { id: 'dashboard', label: 'Início', icon: LayoutDashboard },
+  { id: 'dashboard', label: 'Inicio', icon: LayoutDashboard },
   { id: 'billing', label: 'Faturas', icon: CreditCard },
   { id: 'support', label: 'Suporte', icon: Headphones },
   { id: 'ai', label: 'IA', icon: Bot },
-  { id: 'admin', label: 'Admin', icon: Settings }
+  { id: 'admin', label: 'Admin', icon: Settings, adminOnly: true }
 ];
 
 export function AppLayout({ page, setPage, children }) {
-  const { customer, logout } = useAuth();
+  const { customer, isAdmin, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const visibleNav = nav.filter((item) => !item.adminOnly || isAdmin);
 
   return (
     <div className="app-shell">
@@ -25,7 +26,7 @@ export function AppLayout({ page, setPage, children }) {
           </div>
         </div>
         <nav>
-          {nav.map((item) => {
+          {visibleNav.map((item) => {
             const Icon = item.icon;
             return (
               <button className={page === item.id ? 'active' : ''} key={item.id} onClick={() => setPage(item.id)}>
@@ -40,7 +41,7 @@ export function AppLayout({ page, setPage, children }) {
       <main className="content">
         <header className="topbar">
           <div>
-            <span>Olá, {customer?.name?.split(' ')[0] || 'cliente'}</span>
+            <span>Ola, {customer?.name?.split(' ')[0] || 'cliente'}</span>
             <strong>Como podemos simplificar seu dia?</strong>
           </div>
           <div className="top-actions">
