@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.env
+.env.local
+npm-debug.log*
+Dockerfile.local
+coverage/
+.DS_Store
+Thumbs.db
